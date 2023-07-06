@@ -1,0 +1,34 @@
+<script>
+    const prObj1 = new Promise((resolve,reject)=>{
+          setTimeout(()=>{
+           let roll = [1,2128,3,4,5];
+           resolve(roll); //for success
+         
+        //if not
+        // reject('Error while fetching Api');
+        },2000);
+    });
+
+    const getBiodata = (indexData) =>{
+        return new Promise((resolve,reject)=>{
+            setTimeout((indexData)=>{
+              let biodata ={
+              name:'Abhi',
+              age:20
+              }
+              resolve(`${indexData} and ${biodata.name} and ${biodata.age}`);
+            },2000,indexData); 
+        })
+    }
+
+//for getting
+prObj1.then((roll)=>{
+  console.log(roll);
+//   return getBiodata(roll[1]);
+  getBiodata(roll[1]).then((data) =>{
+    console.log(data);
+  })
+}).catch((error)=>{
+  console.log(error)
+})
+</script>
