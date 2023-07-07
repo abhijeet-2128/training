@@ -1,2 +1,0 @@
-
-    alert("I am javascript");
