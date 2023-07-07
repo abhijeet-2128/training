@@ -32,10 +32,14 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 //merge requests
 app.post('/merge', (req, res) => {
+   
   try {
-    const file1 = fs.readFileSync('file1.txt', 'utf8');
-    const file2 = fs.readFileSync('file2.txt', 'utf8');
+    const file1 = fs.readFile('file1.txt', 'utf8');
+    console.log(file1 , 'file1');
+    const file2 = fs.readFile('file2.txt', 'utf8');
+    console.log(file2 , 'file2');
     const merged = file1 + file2;
+    
     fs.writeFileSync('newfile.txt', merged);
     res.send('Files merged successfully');
   } catch (err) {
