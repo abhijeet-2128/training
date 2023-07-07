@@ -31,21 +31,22 @@ app.post('/upload', upload.single('file'), (req, res) => {
 });
 
 //merge requests
-app.post('/merge', (req, res) => {
-   
-  try {
-    const file1 = fs.readFile('file1.txt', 'utf8');
-    console.log(file1 , 'file1');
-    const file2 = fs.readFile('file2.txt', 'utf8');
-    console.log(file2 , 'file2');
-    const merged = file1 + file2;
-    
-    fs.writeFileSync('newfile.txt', merged);
-    res.send('Files merged successfully');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error merging files');
+app.post('/upload', upload.fields([{ name: 'file1', maxCount: 1 }, { name: 'file2', maxCount: 1 }]), (req, res) => {
+  const files = req.files;
+  if (!files || !files.file1 || !files.file2) {
+    return res.status(400).send('Two files must be uploaded.');
   }
+
+  // Read the content of the two files
+  const file1Content = fs.readFileSync(files.file1[0].path, 'utf-8');
+  const file2Content = fs.readFileSync(files.file2[0].path, 'utf-8');
+
+  // Merge the file contents
+  const mergedContent = file1Content + file2Content;
+
+  // Perform any additional processing or logic on the merged content if needed
+
+  res.send(mergedContent);
 });
 
 
