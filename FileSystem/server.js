@@ -31,7 +31,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 });
 
 //merge requests
-app.post('/upload', upload.fields([{ name: 'file1', maxCount: 1 }, { name: 'file2', maxCount: 1 }]), (req, res) => {
+app.post('/merge', upload.fields([{ name: 'file1', maxCount: 1 }, { name: 'file2', maxCount: 1 }]), (req, res) => {
   const files = req.files;
   if (!files || !files.file1 || !files.file2) {
     return res.status(400).send('Two files must be uploaded.');
