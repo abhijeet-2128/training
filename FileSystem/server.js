@@ -1,7 +1,11 @@
 const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
+const { dirname } = require('path');
 const app = express();
+const path = require('path');
+const { log, time } = require('console');
+const { send } = require('process');
 
 //first end point
 app.get('/',(req,res)=>{
@@ -20,7 +24,6 @@ const storage = multer.diskStorage({
 
 // Create the multer upload instance
 const upload = multer({ storage: storage });
-
 // Define a route for file upload
 app.post('/upload', upload.single('file'), (req, res) => {
   if (!req.file) {
@@ -30,7 +33,10 @@ app.post('/upload', upload.single('file'), (req, res) => {
   res.send('File uploaded successfully.');
 });
 
-//merge requests
+
+
+// <---------- Merging ----->
+//merge two files 
 app.post('/merge', upload.fields([{ name: 'file1', maxCount: 1 }, { name: 'file2', maxCount: 1 }]), (req, res) => {
   const files = req.files;
   if (!files || !files.file1 || !files.file2) {
@@ -44,12 +50,45 @@ app.post('/merge', upload.fields([{ name: 'file1', maxCount: 1 }, { name: 'file2
   // Merge the file contents
   const mergedContent = file1Content + file2Content;
 
-  // Perform any additional processing or logic on the merged content if needed
+  const backupFolderPath = path.join(__dirname,'backup');
+  if(!fs.existsSync(backupFolderPath)){
+    fs.mkdirSync(backupFolderPath);
+  }
+  const timestamp = Date.now();
+  const mergeFilename = `merged_${timestamp}.txt`;
+  const mergedFilePath = path.join(backupFolderPath,mergeFilename); 
+  fs.writeFileSync(mergedFilePath,mergedContent);
 
   res.send(mergedContent);
-});
+ 
+  console.log((timestamp));
 
 
+  // <----- Deletion ------->
+  // file deletion using fs module
+  app.delete('/delete',(req,res)=>{
+    const deletefilepath = req.params.filePath;
+    console.log(deletefilepath)
+    fs.access(deletefilepath,fs.constants.F_OK,(err)=>{
+      if(err) {
+        return res.status(404),send('File not found');
+      }
+
+      //delete
+      fs.unlink(deletefilepath,(err)=>{
+        if(err){
+          return res.status(500).send('Error deleting file');
+        }-
+        res.send('File Deleted');
+      })
+
+       })
+    })
+  });
+
+
+
+// <----- Reading a file content--- -- >
 app.post('/read', upload.single('file'), (req, res) => {
   if (!req.file) {
     return res.status(400).send('No file uploaded.');
