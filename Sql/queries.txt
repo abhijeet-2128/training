@@ -1,0 +1,34 @@
+CREATE TABLE cities(name VARCHAR(255), country VARCHAR(255), population INTEGER, area INTEGER);
+
+INSERT INTO
+  cities(name, country, population, area)
+VALUES
+  ('Tokyo', 'Japan', 13515271, 2191),
+  ('Delhi', 'India', 16753235, 1484),
+  ('Shanghai', 'China', 24870895, 6341),
+  ('São Paulo', 'Brazil', 12252023, 1521),
+  ('Mexico City', 'Mexico', 9209944, 1485),
+  ('Cairo', 'Egypt', 9500000, 6341),
+  ('Mumbai', 'India', 12478447, 1525),
+  ('Beijing', 'China', 21893095, 1485),
+  ('Dhaka', 'Bangladesh', 8906039, 3085),
+  ('Osaka', 'Japan', 8906039, 26349);
+  
+  SELECT * FROM cities;
+  
+  SELECT name || ' ' || country As name_country FROM cities;
+  
+  SELECT * FROM cities WHERE name LIKE 'S%';
+  
+SELECT name,LENGTH(name) AS name_length FROM cities;
+
+  
+SELECT UPPER(name) AS capital_names FROM cities;
+SELECT SUBSTRING(name,1,3) AS short_form FROM cities;
+
+Mathematical operations
+
+SELECT 5+3 as sum; 
+SELECT 5-3 as diff; 
+
+
