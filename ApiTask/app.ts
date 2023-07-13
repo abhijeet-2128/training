@@ -1,5 +1,5 @@
 import express from 'express';
-import { signup, login } from '../TsStructure/src/controllers/authController';
+import { signup, login } from '../ApiTask/src/controllers/authController';
 
 const app = express();
 
