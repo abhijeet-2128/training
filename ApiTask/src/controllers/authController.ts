@@ -9,7 +9,7 @@ export const signup = async (req: Request, res: Response) => {
     const user = await User.create({ username, password });
     const userId = user.id;
 
-    const token = jwt.sign({ userId }, 'secret');
+    // const token = jwt.sign({ userId }, 'secret');
 
     res.send("User created successfully please login");
   } catch (error) {

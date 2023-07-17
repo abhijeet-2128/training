@@ -1,12 +1,11 @@
 import express from 'express';
-import { signup, login } from '../ApiTask/src/controllers/authController';
+import authRoutes from '../ApiTask/src/routes/authRoutes';
 
 const app = express();
 
 app.use(express.json());
 
-app.post('/signup', signup);
-app.post('/login', login);
+app.use('/api/auth', authRoutes);
 
 app.listen(3000, () => {
   console.log('Server started on port 3000');
