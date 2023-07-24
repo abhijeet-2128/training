@@ -1,0 +1,66 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Test API",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "API functions",
+      "description": "API functions of our application"
+    }
+  ],
+  "paths": {
+    "/user/signup": {
+      "post": {
+        "summary": "User Signup",
+        "tags": [
+          "API functions"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "full_name": {
+                    "type": "string"
+                  },
+                  "bio": {
+                    "type": "string"
+                  },
+                  "profile_pic": {
+                    "type": "string"
+                  }
+                },
+                "required": ["username", "email", "password","full_name" ,"bio","profile_pic"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signup successful"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  }
+}
