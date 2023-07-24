@@ -1,3 +1,4 @@
+import Joi from 'joi';
 import mongoose, { Document, Schema } from 'mongoose';
 
 interface IAction extends Document {
@@ -57,3 +58,28 @@ const actionSchema = new mongoose.Schema<IAction>({
 });
 
 export const Action = mongoose.model<IAction>('Action', actionSchema);
+const validateAction = (action: any) => {
+  const schema = Joi.object({
+    user_id: Joi.string().required(),
+    action_type: Joi.string().valid('like', 'comment', 'follow').required(),
+    post_id: Joi.when('action_type', {
+      is: Joi.string().valid('like', 'comment'),
+      then: Joi.string().required(),
+    }),
+    comment: Joi.object({
+      user_id: Joi.string(),
+      text: Joi.string().required(),
+      created_at: Joi.date().default(Date.now),
+      replies: Joi.array().items(
+        Joi.object({
+          user_id: Joi.string(),
+          text: Joi.string().required(),
+          created_at: Joi.date().default(Date.now),
+        })
+      ),
+    }),
+    created_at: Joi.date().default(Date.now),
+  });
+
+  return schema.validate(action);
+};

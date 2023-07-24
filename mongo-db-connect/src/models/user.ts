@@ -1,3 +1,4 @@
+import Joi from 'joi';
 import mongoose, { Document } from "mongoose";
 import bcrypt from "bcrypt";
 
@@ -24,10 +25,12 @@ const userSchema = new mongoose.Schema<IUser>({
   updated_at: { type: Date, default: Date.now },
 });
 
+
 userSchema.methods.comparePassword = async function (password: string): Promise<boolean> {
   return bcrypt.compare(password, this.password);
 };
 
 const User = mongoose.model<IUser>("User", userSchema);
+
 
 export default User;
