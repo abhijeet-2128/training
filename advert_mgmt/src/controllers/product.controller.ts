@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Product from "../model/Product";
 import Category from '../model/Category';
-import { QueryTypes } from "sequelize";
+import { Op, QueryTypes } from "sequelize";
 import sequelize from "../db/connect";
 export const addProduct = async (req: Request, res: Response) => {
 
@@ -30,6 +30,30 @@ export const addProduct = async (req: Request, res: Response) => {
     }
 
 }
+
+export const filterProduct=async(req:Request,res:Response)=>{
+
+  const minPrice = parseInt(req.query.min_price as string);
+  const maxPrice = parseInt(req.query.max_price as string);
+
+  console.log(minPrice);
+
+  try {
+    const filteredProducts = await Product.findAll({
+      where: {
+        base_price: {
+          [Op.between]: [minPrice, maxPrice],
+        },
+      },
+    });
+
+    res.json(filteredProducts);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+
+}
+
 
 export const getCategory = async (req: Request, res: Response)=> {
   try {
